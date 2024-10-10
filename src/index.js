@@ -3,7 +3,7 @@ const fastify = require("fastify")({
 });
 const app = require("./app");
 const serverConfig = require("./config/serverConfig");
-const connectToDB = require("./config/dbConfig");
+const { connectDB } = require("./config/dbConfig");
 
 fastify.register(app);
 fastify.listen({ port: serverConfig.PORT }, async (err) => {
@@ -11,5 +11,5 @@ fastify.listen({ port: serverConfig.PORT }, async (err) => {
     fastify.log.error(err);
     process.exit(1);
   }
-  await connectToDB();
+  await connectDB();
 });

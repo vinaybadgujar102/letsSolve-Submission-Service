@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "fastify": "^5.0.0",
     "fastify-plugin": "^5.0.1",
     "ioredis": "^5.4.1",
-    "mongoose": "^8.7.1"
+    "mongoose": "^8.7.1",
+    "nodemon": "^3.1.7"
   }
 }

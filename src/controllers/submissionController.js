@@ -6,9 +6,12 @@ async function pingRequest(req, res) {
 }
 
 async function createSubmission(req, res) {
-  const response = await this.submissionService.createSubmission(req.body);
+  console.log(req.body);
 
-  return res.status(201).json({
+  const response = await this.submissionService.createSubmission(req.body);
+  console.log(response);
+
+  return res.status(201).send({
     error: {},
     data: response,
     success: true,
