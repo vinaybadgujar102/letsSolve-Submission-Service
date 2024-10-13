@@ -43,7 +43,13 @@ class SubmissionService {
     }
     console.log("submission created", submission);
 
-    const response = await SubmissionProducer(submission);
+    const response = await SubmissionProducer({
+      [submission._id]: {
+        code: submission.code,
+        language: submission.language,
+        inputCase: problemAdminApiResponse.data.testCases[0].inputCase,
+      },
+    });
     return {
       queueResponse: response,
       submission,
