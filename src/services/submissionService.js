@@ -13,6 +13,7 @@ class SubmissionService {
   async createSubmission(submissionPayload) {
     // hit the problem admin service and fetch the problems details
     const problemId = submissionPayload.problemId;
+    const userId = submissionPayload.userId;
 
     const problemAdminApiResponse = await fetchProblemDetails(problemId);
 
@@ -48,6 +49,9 @@ class SubmissionService {
         code: submission.code,
         language: submission.language,
         inputCase: problemAdminApiResponse.data.testCases[0].inputCase,
+        outputCase: problemAdminApiResponse.data.testCases[0].outputCase,
+        userId: userId,
+        submissionId: submission._id,
       },
     });
 
