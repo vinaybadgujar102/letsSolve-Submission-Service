@@ -1,3 +1,4 @@
+const { createSubmission } = require("../controllers/submissionController");
 const Submission = require("../models/submissionModel");
 
 class SubmissionRepository {
@@ -6,9 +7,9 @@ class SubmissionRepository {
   }
 
   async createSubmission(submission) {
-    const response = await this.submissionModel.create(submission);
-    console.log(response);
+    console.log(submission);
 
+    const response = await this.submissionModel.create(submission);
     return response;
   }
 }

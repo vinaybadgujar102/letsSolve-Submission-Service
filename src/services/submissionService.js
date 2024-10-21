@@ -1,9 +1,9 @@
 const { fetchProblemDetails } = require("../apis/problemAdminApi");
 const SubmissionProducer = require("../producers/submissionQueueProducer");
 const SubmissionCreationError = require("../errors/submissionCreation.error");
-
 class SubmissionService {
-  contructor(submissionRepository) {
+  constructor(submissionRepository) {
+    // inject here
     this.submissionRepository = submissionRepository;
   }
 
@@ -12,9 +12,9 @@ class SubmissionService {
   }
 
   async createSubmission(submissionPayload) {
-    // hit the problem admin service and fetch the problems details
-    const problemId = submissionPayload.problemId;
-    const userId = submissionPayload.userId;
+    // Hit the problem admin service and fetch the problem details
+    const problemId = submissionPayload.problemID;
+    const userId = submissionPayload.userID;
 
     const problemAdminApiResponse = await fetchProblemDetails(problemId);
 
@@ -25,9 +25,7 @@ class SubmissionService {
     }
 
     const languageCodeStub = problemAdminApiResponse.data.codeStubs.find(
-      (codeStub) =>
-        codeStub.language.toLowerCase() ===
-        submissionPayload.language.toLowerCase()
+      (codeStub) => codeStub.language.toLowerCase() === "java"
     );
 
     console.log(languageCodeStub);
@@ -43,29 +41,25 @@ class SubmissionService {
       submissionPayload
     );
     if (!submission) {
-      // TODO: add error handling
+      // TODO: Add error handling here
       throw new SubmissionCreationError(
         "Failed to create a submission in the repository"
       );
     }
-    console.log("submission created", submission);
-
+    console.log(submission);
     const response = await SubmissionProducer({
       [submission._id]: {
         code: submission.code,
         language: submission.language,
         inputCase: problemAdminApiResponse.data.testCases[0].input,
         outputCase: problemAdminApiResponse.data.testCases[0].output,
-        userId: userId,
+        userId,
         submissionId: submission._id,
       },
     });
 
-    // TODO: Add handling of all testcases here
-    return {
-      queueResponse: response,
-      submission,
-    };
+    // TODO: Add handling of all testcases here .
+    return { queueResponse: response, submission };
   }
 }
 
