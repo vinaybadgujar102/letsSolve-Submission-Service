@@ -2,6 +2,7 @@ const { Worker } = require("bullmq");
 const redisConnection = require("../config/redisConfig");
 const axios = require("axios");
 const Submission = require("../models/submissionModel");
+const serverConfig = require("../config/serverConfig");
 
 function evaluationWorker(queue) {
   new Worker(
@@ -20,7 +21,7 @@ function evaluationWorker(queue) {
 
           console.log(submissionUpdate);
           const response = await axios.post(
-            "http://localhost:3001/sendPayload",
+            serverConfig.SOCKET_SERVICE_URL + "/sendPayload",
             {
               userID: job.data.userID,
               payload: job.data,
