@@ -2,6 +2,7 @@ const fastifyPlugin = require("fastify-plugin");
 const servicePlugin = require("./services/servicePlugin");
 const repositoryPlugin = require("./repositories/repositoryPlugin");
 const todoRoutes = require("./routes/api/v1/submissionRoutes");
+const rateLimitConfig = require("./config/rateLimitConfig");
 
 /**
  *
@@ -10,12 +11,11 @@ const todoRoutes = require("./routes/api/v1/submissionRoutes");
  */
 async function app(fastify, options) {
   await fastify.register(require("@fastify/cors"));
+  await fastify.register(require("@fastify/rate-limit"), rateLimitConfig);
   await fastify.register(repositoryPlugin);
   await fastify.register(servicePlugin);
 
   await fastify.register(todoRoutes, { prefix: "/todos" });
-
-  // register test routes
   await fastify.register(require("./routes/api/apiRoutes"), { prefix: "/api" });
 }
 
