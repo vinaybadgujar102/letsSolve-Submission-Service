@@ -3,6 +3,7 @@ const servicePlugin = require("./services/servicePlugin");
 const repositoryPlugin = require("./repositories/repositoryPlugin");
 const todoRoutes = require("./routes/api/v1/submissionRoutes");
 const rateLimitConfig = require("./config/rateLimitConfig");
+const cors = require("@fastify/cors");
 
 /**
  *
@@ -10,7 +11,7 @@ const rateLimitConfig = require("./config/rateLimitConfig");
  * @param {*} options
  */
 async function app(fastify, options) {
-  await fastify.register(require("@fastify/cors"));
+  await fastify.register(cors, { origin: "*" });
   await fastify.register(require("@fastify/rate-limit"), rateLimitConfig);
   await fastify.register(repositoryPlugin);
   await fastify.register(servicePlugin);
