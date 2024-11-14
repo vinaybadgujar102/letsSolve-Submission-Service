@@ -25,7 +25,9 @@ class SubmissionService {
     }
 
     const languageCodeStub = problemAdminApiResponse.data.codeStubs.find(
-      (codeStub) => codeStub.language.toLowerCase() === "python"
+      (codeStub) =>
+        codeStub.language.toLowerCase() ===
+        submissionPayload.language.toLowerCase()
     );
 
     console.log("languageCodeStub", languageCodeStub);
@@ -63,6 +65,21 @@ class SubmissionService {
 
     // TODO: Add handling of all testcases here .
     return { queueResponse: response, submission };
+  }
+
+  async getUserProblemSubmissions(userID, problemID) {
+    if (!userID || !problemID) {
+      throw new SubmissionCreationError("User ID and Problem ID are required");
+    }
+
+    const submissions =
+      await this.submissionRepository.getUserProblemSubmissions(
+        userID,
+        problemID
+      );
+
+    console.log("submissions", submissions);
+    return submissions;
   }
 }
 
